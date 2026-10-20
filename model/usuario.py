@@ -10,7 +10,7 @@ class Usuario(Base):
 
     id = Column("IDUSUARIO", Integer, primary_key=True)
     nome = Column("NOME", String(100))
-    login = Column("LOGIN", String(100))
+    email = Column("EMAIL", String(200))
     senha = Column("SENHA", String(200))
     perfil = Column("PERFIL", String(10))
     bloqueado = Column("BLOQUEADO", String(1))
@@ -18,7 +18,7 @@ class Usuario(Base):
     def to_print(self):
         return {"id": self.id
                 , "nome": self.nome
-                , "login": self.login
+                , "email": self.email
                 , "perfil": self.perfil
                 , "bloqueado": self.bloqueado
                 }
