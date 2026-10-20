@@ -1,24 +1,32 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import declarative_base
 
-# criando o elemento que vai mapear a classe com a tabela do banco
+# NOTA: Caso já tenha a Base criada num ficheiro de ligação à base de dados (ex: database.py),
+# prefira importar de lá: from database import Base
 Base = declarative_base()
 
+
 class Usuario(Base):
+  __tablename__ = "USUARIO"
 
-    __tablename__ = "USUARIO"
+  id = Column("IDUSUARIO", Integer, primary_key=True, autoincrement=True)
+  nome = Column("NOME", String(100), nullable=False)
+  email = Column("EMAIL", String(200), nullable=False, unique=True, index=True)
+  senha = Column("SENHA", String(255), nullable=False)
+  perfil = Column("PERFIL", String(20), nullable=False, default="COMUM")
+  bloqueado = Column("BLOQUEADO", String(1), nullable=False, default="N")
 
-    id = Column("IDUSUARIO", Integer, primary_key=True)
-    nome = Column("NOME", String(100))
-    email = Column("EMAIL", String(200))
-    senha = Column("SENHA", String(200))
-    perfil = Column("PERFIL", String(10))
-    bloqueado = Column("BLOQUEADO", String(1))
+  def to_dict(self):
+    """Retorna uma representação em dicionário sem expor a senha."""
+    return {
+        "id": self.id,
+        "nome": self.nome,
+        "email": self.email,
+        "perfil": self.perfil,
+        "bloqueado": self.bloqueado,
+    }
 
-    def to_print(self):
-        return {"id": self.id
-                , "nome": self.nome
-                , "email": self.email
-                , "perfil": self.perfil
-                , "bloqueado": self.bloqueado
-                }
+  def __repr__(self):
+    return (
+        f"<Usuario(id={self.id}, nome='{self.nome}', email='{self.email}')>"
+    )
